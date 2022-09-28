@@ -26,9 +26,7 @@ jobs:
         run: |
           pip install pipenv
       - name: Install dependencies
-        uses: VaultVulp/action-pipenv@v2.0.1
-        with:
-          command: install -d
+        run: pipenv install --dev
       - name: Check migrations
         run: |
           python src/manage.py makemigrations
@@ -36,6 +34,5 @@ jobs:
           python src/manage.py check
 
       - name: Run tests
-        uses: VaultVulp/action-pipenv@v2.0.1
-        with:
-          command: python src/manage.py test && flake8
+        run: |
+          python src/manage.py test && flake8
