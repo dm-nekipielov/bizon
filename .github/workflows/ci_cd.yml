@@ -27,7 +27,7 @@ jobs:
           pip install pipenv
       - name: Install dependencies
         run: |
-          pipenv install --d
+          pipenv install -d
       - name: Check migrations
         run: |
           python src/manage.py makemigrations
