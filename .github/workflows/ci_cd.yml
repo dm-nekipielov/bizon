@@ -36,5 +36,6 @@ jobs:
           python src/manage.py check
 
       - name: Run tests
-        run: |
-          python src/manage.py test && flake8
+        uses: VaultVulp/action-pipenv@v2.0.1
+        with:
+          command: python src/manage.py test && flake8
