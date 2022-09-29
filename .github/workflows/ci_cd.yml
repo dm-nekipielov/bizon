@@ -27,7 +27,6 @@ jobs:
           pip install pipenv
       - name: Install dependencies
         run: |
-          pipenv shell
           pipenv install --dev
       - name: Check migrations
         run: |
