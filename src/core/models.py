@@ -7,8 +7,8 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
-from src.accounts.managers import CustomerManager
-from src.utils import directory_path
+from core.managers import CustomerManager
+from utils import directory_path
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -66,7 +66,7 @@ class Profile(models.Model):
             FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])],
         null=True,
         blank=True,
-        default="/static/media/avatar.jpeg"
+        default="users/no_avatar.jpeg"
     )
     birth_date = models.DateField(null=True, blank=True)
     phone_number = PhoneNumberField(_("phone number"), null=True, blank=True)
@@ -76,7 +76,7 @@ class Profile(models.Model):
         if self.avatar and hasattr(self.avatar, 'url'):
             return self.avatar.url
         else:
-            return "/media/avatar.jpeg"
+            return "users/no_avatar.jpeg"
 
     def __str__(self):
         return f"{self.user.pk} {self.user.first_name} {self.user.last_name} {self.user.email}"

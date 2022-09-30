@@ -1,2 +1,2 @@
 def directory_path(instance, filename):
-    return f"static/media/user_{instance.pk}/{filename}"
+    return f"users/user_{instance.pk}/{filename}"
