@@ -2,9 +2,15 @@ from _ast import Sub
 
 from django.contrib import admin
 
-from catalogue.models import Category, SubCategory, Product, Order
+from catalogue.models import Category, Order, Product, SubCategory
 
-admin.site.register([Category, SubCategory, Product, ])
+admin.site.register(
+    [
+        Category,
+        SubCategory,
+        Product,
+    ]
+)
 
 
 @admin.register(Order)

@@ -3,17 +3,10 @@ from django.db import models
 
 
 class Product(models.Model):
-    category = models.ForeignKey(
-        to="catalogue.SubCategory",
-        related_name="products",
-        on_delete=models.CASCADE
-    )
+    subcategory = models.ForeignKey(to="catalogue.SubCategory", related_name="products", on_delete=models.CASCADE)
     name = models.CharField(max_length=200, db_index=True)
     code = models.IntegerField(null=True)
-    image = models.ImageField(
-        upload_to="catalogue/products/%Y/%m/%d",
-        default="catalogue/no_image.jpg"
-    )
+    image = models.ImageField(upload_to="catalogue/products/%Y/%m/%d", default="catalogue/no_image.jpg")
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField()
@@ -25,20 +18,17 @@ class Product(models.Model):
         verbose_name = "Product"
         verbose_name_plural = "Products"
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
 
 class SubCategory(models.Model):
-    category = models.ForeignKey(
-        to="catalogue.Category",
-        related_name="sub_categories",
-        on_delete=models.CASCADE
-    )
-    image = models.ImageField(
-        upload_to="catalogue/subcategory/%Y/%m/%d",
-        default="catalogue/no_image.jpg"
-    )
+    category = models.ForeignKey(to="catalogue.Category", related_name="sub_categories", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="catalogue/subcategory/%Y/%m/%d", default="catalogue/no_image.jpg")
     name = models.CharField(max_length=512)
 
     class Meta:
@@ -50,10 +40,7 @@ class SubCategory(models.Model):
 
 
 class Category(models.Model):
-    image = models.ImageField(
-        upload_to="catalogue/category/%Y/%m/%d",
-        default="catalogue/no_image.jpg"
-    )
+    image = models.ImageField(upload_to="catalogue/category/%Y/%m/%d", default="catalogue/no_image.jpg")
     name = models.CharField(max_length=512)
 
     class Meta:
@@ -65,27 +52,15 @@ class Category(models.Model):
 
 
 class Comment(models.Model):
-    product = models.ForeignKey(
-        to=Product,
-        related_name="comments",
-        on_delete=models.CASCADE
-    )
-    user = models.ForeignKey(
-        to=get_user_model(),
-        related_name="user_comments",
-        on_delete=models.CASCADE
-    )
-    title = models.CharField(max_length=512)
-    text = models.TextField()
+    product = models.ForeignKey(to=Product, related_name="comments", on_delete=models.CASCADE)
+    user = models.ForeignKey(to=get_user_model(), related_name="user_comments", on_delete=models.CASCADE)
+    title = models.CharField(max_length=128)
+    text = models.TextField(max_length=1024)
 
 
 class Order(models.Model):
-    user = models.ForeignKey(
-        to=get_user_model(),
-        related_name="user_orders",
-        on_delete=models.CASCADE
-    )
-    product = models.ManyToManyField(
+    user = models.ForeignKey(to=get_user_model(), related_name="user_orders", on_delete=models.CASCADE)
+    products = models.ManyToManyField(
         to=Product,
         related_name="orders",
     )
@@ -94,4 +69,4 @@ class Order(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def total(self):
-        return sum(i.price for i in self.product.all())
+        return sum(i.price for i in self.products.all())

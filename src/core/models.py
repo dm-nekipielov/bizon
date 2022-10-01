@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
 from core.managers import CustomerManager
-from utils import directory_path
+from core.utils.general import directory_path
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -18,8 +18,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,
-        help_text=_(
-            "Designates whether the user can log into this admin site."),
+        help_text=_("Designates whether the user can log into this admin site."),
     )
     is_active = models.BooleanField(
         _("active"),
@@ -62,18 +61,17 @@ class Profile(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     avatar = models.ImageField(
         upload_to=directory_path,
-        validators=[
-            FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])],
+        validators=[FileExtensionValidator(allowed_extensions=["jpg", "jpeg", "png"])],
         null=True,
         blank=True,
-        default="users/no_avatar.jpeg"
+        default="users/no_avatar.jpeg",
     )
     birth_date = models.DateField(null=True, blank=True)
     phone_number = PhoneNumberField(_("phone number"), null=True, blank=True)
 
     @property
     def get_photo_url(self):
-        if self.avatar and hasattr(self.avatar, 'url'):
+        if self.avatar and hasattr(self.avatar, "url"):
             return self.avatar.url
         else:
             return "users/no_avatar.jpeg"
