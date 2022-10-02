@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from utils.samples import (sample_category, sample_order, sample_product,
-                                sample_subcategory)
+                           sample_subcategory)
 
 
 class TestProductModel(TestCase):
