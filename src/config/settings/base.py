@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "phonenumber_field",
-    # "django_extensions",
+    "django_extensions",
     "core",
     "accounts",
     "catalogue",
@@ -51,7 +51,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
-AUTH_USER_MODEL = "core.CustomUser"
+AUTH_USER_MODEL = "accounts.CustomUser"
 
 TEMPLATES = [
     {
