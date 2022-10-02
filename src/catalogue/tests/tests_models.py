@@ -4,8 +4,8 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from core.utils.samples import (sample_category, sample_order, sample_product,
-                                sample_subcategory)
+from utils.samples import (sample_category, sample_order, sample_product,
+                           sample_subcategory)
 
 
 class TestProductModel(TestCase):
