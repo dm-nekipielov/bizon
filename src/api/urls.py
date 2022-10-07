@@ -1,5 +1,7 @@
 from django.urls import include, path
-from rest_framework import routers
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import routers, permissions
 
 from api.views import (CategoryCreateView, CategoryDeleteView,
                        CategoryDetailView, CategoryListView,
@@ -13,9 +15,25 @@ app_name = "api"
 routes = routers.DefaultRouter()
 routes.register("customers", UserViewSet)
 
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Bizon API",
+      default_version='v1',
+      description="Test description",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="contact@snippets.local"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=[permissions.AllowAny],
+)
+
+
 urlpatterns = [
     path("", include(routes.urls)),
     path("auth/", include("rest_framework.urls")),
+    path("docs/", schema_view.with_ui('swagger', cache_timeout=0), name='swagger_docs'),
+    path("auth/", include("djoser.urls.jwt")),
     path("category/", CategoryListView.as_view(), name="category_list"),
     path("category/<int:pk>/", CategoryDetailView.as_view(), name="category_detail"),
     path("category/create/", CategoryCreateView.as_view(), name="product_create"),
