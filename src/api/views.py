@@ -1,6 +1,7 @@
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveAPIView,
                                      UpdateAPIView)
+from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 
 from accounts.models import CustomUser
