@@ -24,7 +24,7 @@ if os.environ.get("GITHUB_WORKFLOW"):
     }
 else:
     DATABASES = {
-        "default_sqlite": {
+        "default_sql": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
         },

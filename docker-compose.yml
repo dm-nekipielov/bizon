@@ -3,7 +3,7 @@ version: "3"
 services:
   backend:
     build: ./
-    container_name: bizon_cont
+    container_name: bizon_container
     working_dir: /bizon
     command:
       - ./commands/start_server.sh

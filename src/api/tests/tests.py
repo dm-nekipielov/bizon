@@ -18,9 +18,11 @@ class TestAPI(TestCase):
             name="test_subcategory",
         )
         self.product = samples.sample_product(subcategory=self.subcategory, name="test_product", price=999)
+        print(f"product_id: {self.product.pk}")
         self.user = get_user_model().objects.create(email="test_user@email.com")
         self.user.set_password("qwerty")
         self.user.save()
+        print(f"user_id: {self.user.pk}")
 
     def test_product_details(self):
         self.client.force_authenticate(user=self.user)
@@ -63,24 +65,24 @@ class TestAPI(TestCase):
         )
         self.assertEqual(response.status_code, HTTP_201_CREATED)
 
-    # def test_product_update_partly(self):
-    #     self.client.force_authenticate(user=self.user)
-    #     response = self.client.patch(
-    #         reverse("api:product_update", kwargs={"pk": self.product.pk}), data={"name": "new product name"}
-    #     )
-    #     self.assertEqual(response.status_code, HTTP_200_OK)
-    #     self.assertEqual(
-    #         response.data,
-    #         {
-    #             "id": 1,
-    #             "name": "new product name",
-    #             "price": "999.00",
-    #             "code": 12345,
-    #             "description": "Some test description",
-    #             "stock": 1,
-    #             "subcategory": 1,
-    #         },
-    #     )
+    def test_product_update_partly(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.patch(
+            reverse("api:product_update", kwargs={"pk": self.product.pk}), data={"name": "new product name"}
+        )
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(
+            response.data,
+            {
+                "id": 1,
+                "name": "new product name",
+                "price": "999.00",
+                "code": 12345,
+                "description": "Some test description",
+                "stock": 1,
+                "subcategory": 1,
+            },
+        )
 
     def test_product_update_fully(self):
         self.client.force_authenticate(user=self.user)
