@@ -52,7 +52,7 @@ class TestAPI(TestCase):
                 "code": 12345,
                 "description": "Some test description",
                 "stock": 1,
-                "subcategory": 1,
+                "subcategory": self.subcategory.pk,
             },
         )
         self.assertEqual(response.status_code, HTTP_201_CREATED)
@@ -66,13 +66,13 @@ class TestAPI(TestCase):
         self.assertEqual(
             response.data,
             {
-                "id": 9,
+                "id": self.product.pk,
                 "name": "new product name",
                 "price": "999.00",
                 "code": 12345,
                 "description": "Some test description",
                 "stock": 1,
-                "subcategory": 7,
+                "subcategory": self.subcategory.pk,
             },
         )
 
@@ -81,26 +81,26 @@ class TestAPI(TestCase):
         response = self.client.put(
             reverse("api:product_update", kwargs={"pk": self.product.pk}),
             data={
-                "id": 8,
+                "id": self.product.pk,
                 "name": "Updated product name",
                 "price": "1.00",
                 "code": 11111,
                 "description": "Updated description",
                 "stock": 1,
-                "subcategory": 6,
+                "subcategory": self.subcategory.pk,
             },
         )
         self.assertEqual(response.status_code, HTTP_200_OK)
         self.assertEqual(
             response.data,
             {
-                "id": 8,
+                "id": self.product.pk,
                 "name": "Updated product name",
                 "price": "1.00",
                 "code": 11111,
                 "description": "Updated description",
                 "stock": 1,
-                "subcategory": 6,
+                "subcategory": self.subcategory.pk,
             },
         )
 
