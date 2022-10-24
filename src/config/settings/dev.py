@@ -28,9 +28,9 @@ else:
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
         },
-        "default_local_postgres": {
+        "default_local": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": "Nekipielov",
+            "NAME": "bizon",
             "USER": "postgres",
             "PASSWORD": "admin",
             "HOST": "localhost",
