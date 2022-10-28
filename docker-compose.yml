@@ -13,6 +13,8 @@ services:
       - ./src:/bizon/src
     env_file:
       - .env
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres:12
@@ -23,6 +25,45 @@ services:
     env_file:
       - .env
 
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - 5000:80
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+
+  mongodb:
+    image: mongo:3-stretch
+    container_name: mongodb_cont
+    ports:
+      - 27017:27017
+    command: [ "--bind_ip_all", "--smallfiles" ]
+    volumes:
+      - mongodb_data:/data/db
+    env_file:
+      - .env
+    restart: always
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo_admin_cont
+    restart: always
+    ports:
+      - 8081:8081
+    env_file:
+      - .env
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
 
 volumes:
   pg_data: { }
+  pgadmin_data: { }
+  mongodb_data: { }

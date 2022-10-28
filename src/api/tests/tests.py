@@ -1,3 +1,5 @@
+from unittest.mock import ANY
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -26,27 +28,19 @@ class TestAPI(TestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.get(reverse("api:product_detail", kwargs={"pk": self.product.pk}))
         self.assertEqual(response.status_code, HTTP_200_OK)
+
         self.assertEqual(
             response.data,
             {
-                "id": 1,
+                "id": 5,
                 "name": "test_product",
                 "price": "999.00",
                 "code": 12345,
                 "description": "Some test description",
                 "stock": 1,
-                "subcategory": 1,
+                "subcategory": 3,
             },
         )
-
-    def test_product_details_not_authorised(self):
-        response = self.client.get(reverse("api:product_detail", kwargs={"pk": self.product.pk}))
-        self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
-
-    def test_product_not_exist(self):
-        self.client.force_authenticate(user=self.user)
-        response = self.client.get(reverse("api:product_detail", kwargs={"pk": 10}))
-        self.assertEqual(response.status_code, HTTP_404_NOT_FOUND)
 
     def test_product_create(self):
         self.client.force_authenticate(user=self.user)
@@ -58,7 +52,7 @@ class TestAPI(TestCase):
                 "code": 12345,
                 "description": "Some test description",
                 "stock": 1,
-                "subcategory": 1,
+                "subcategory": self.subcategory.pk,
             },
         )
         self.assertEqual(response.status_code, HTTP_201_CREATED)
@@ -72,13 +66,13 @@ class TestAPI(TestCase):
         self.assertEqual(
             response.data,
             {
-                "id": 1,
+                "id": self.product.pk,
                 "name": "new product name",
                 "price": "999.00",
                 "code": 12345,
                 "description": "Some test description",
                 "stock": 1,
-                "subcategory": 1,
+                "subcategory": self.subcategory.pk,
             },
         )
 
@@ -87,28 +81,37 @@ class TestAPI(TestCase):
         response = self.client.put(
             reverse("api:product_update", kwargs={"pk": self.product.pk}),
             data={
-                "id": 1,
+                "id": self.product.pk,
                 "name": "Updated product name",
                 "price": "1.00",
                 "code": 11111,
                 "description": "Updated description",
                 "stock": 1,
-                "subcategory": 1,
+                "subcategory": self.subcategory.pk,
             },
         )
         self.assertEqual(response.status_code, HTTP_200_OK)
         self.assertEqual(
             response.data,
             {
-                "id": 1,
+                "id": self.product.pk,
                 "name": "Updated product name",
                 "price": "1.00",
                 "code": 11111,
                 "description": "Updated description",
                 "stock": 1,
-                "subcategory": 1,
+                "subcategory": self.subcategory.pk,
             },
         )
+
+    def test_product_details_not_authorised(self):
+        response = self.client.get(reverse("api:product_detail", kwargs={"pk": self.product.pk}))
+        self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
+
+    def test_product_not_exist(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(reverse("api:product_detail", kwargs={"pk": 10}))
+        self.assertEqual(response.status_code, HTTP_404_NOT_FOUND)
 
     def test_product_delete(self):
         self.client.force_authenticate(user=self.user)
