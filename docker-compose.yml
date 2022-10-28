@@ -6,10 +6,12 @@ services:
     container_name: bizon_container
     working_dir: /bizon
     command:
-      - ./commands/start_server.sh
+      - ./commands/start_server_${MODE}.sh
     ports:
-      - 8010:8008
+      - ${LOCAL_PORT}:${WSGI_PORT}
     volumes:
+      - static_content:/bizon/src/static
+      - media_content:/bizon/src/media
       - ./src:/bizon/src
     env_file:
       - .env
@@ -63,7 +65,23 @@ services:
     depends_on:
       - mongodb
 
+  nginx:
+    image: nginx:1.19
+    volumes:
+      - static_content:/bizon/src/static
+      - media_content:/bizon/src/media
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - 80:80
+      - 443:443
+    env_file:
+      - .env
+    depends_on:
+      - backend
+
 volumes:
   pg_data: { }
   pgadmin_data: { }
   mongodb_data: { }
+  static_content: { }
+  media_content: { }
