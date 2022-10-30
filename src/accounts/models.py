@@ -75,7 +75,7 @@ class Profile(models.Model):
         if self.avatar and hasattr(self.avatar, "url"):
             return self.avatar.url
         else:
-            return "users/no_avatar.jpeg"
+            return "/media/users/no_avatar.jpeg"
 
     def __str__(self):
         return f"{self.user.pk} {self.user.first_name} {self.user.last_name} {self.user.email}"
