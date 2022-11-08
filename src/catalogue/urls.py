@@ -1,8 +1,10 @@
 from django.urls import path
-from catalogue.views import bitcoin, normalize_email
 
-app_name = 'catalogue'
+from catalogue.views import categories, products, subcategories
+
+app_name = "catalogue"
 urlpatterns = [
-    path("bitcoin/", bitcoin, name="bitcoin"),
-    path("normalize_email/", normalize_email, name="normalize_email"),
+    path("generate_categories/", categories, name="generate_categories"),
+    path("generate_subcategories/", subcategories, name="generate_subcategories"),
+    path("generate_products/", products, name="generate_products"),
 ]

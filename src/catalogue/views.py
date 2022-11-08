@@ -1,9 +1,9 @@
-from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.views.generic import ListView
 
-from catalogue.models import Category
-from catalogue.tasks import mine_bitcoin, normalize_email_task
+from catalogue.models import Category, SubCategory
+from catalogue.tasks import (generate_categories, generate_products,
+                             generate_subcategories)
 
 
 class IndexView(ListView):
@@ -11,10 +11,16 @@ class IndexView(ListView):
     template_name = "index.html"
 
 
-def bitcoin(request):
-    mine_bitcoin.delay()
-    return HttpResponse("task is started")
+def categories(request):
+    generate_categories.delay()
+    return HttpResponse("Generating categories")
 
-def normalize_email(request):
-    normalize_email_task.delay(filter=dict(email__endswith=".com"))
-    return HttpResponse("task is started")
+
+def subcategories(request):
+    generate_subcategories.delay()
+    return HttpResponse("Generating subcategories")
+
+
+def products(request):
+    generate_products.delay()
+    return HttpResponse("Generating categories")
