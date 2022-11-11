@@ -313,11 +313,11 @@
                                                 <i class="far fa-angle-down"></i></a>
                                             <ul class="mega-menu">
                                             {% for subcategory in category.sub_categories.all %}
-                                                <li><a href="#">{{ subcategory.name }}</a>
+                                                <li><a href="{% url 'catalogue:subcategory' subcategory.pk %}">{{ subcategory.name }}</a>
                                                     <ul class="mega-item">
                                                         {% for product in subcategory.products.all %}
                                                         <li>
-                                                            <a href="#">{{ product.name }}</a>
+                                                            <a href="{% url 'catalogue:product' product.pk %}">{{ product.name }}</a>
                                                         </li>
                                                         {% endfor %}
                                                     </ul>

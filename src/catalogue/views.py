@@ -1,7 +1,7 @@
 from django.http import HttpResponse
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
-from catalogue.models import Category, SubCategory
+from catalogue.models import Category, SubCategory, Product
 from catalogue.tasks import (generate_categories, generate_products,
                              generate_subcategories)
 
@@ -9,6 +9,16 @@ from catalogue.tasks import (generate_categories, generate_products,
 class IndexView(ListView):
     model = Category
     template_name = "index.html"
+
+
+class SubcategoryView(DetailView):
+    model = SubCategory
+    template_name = "catalogue/subcategory.html"
+
+
+class ProductView(DetailView):
+    model = Product
+    template_name = "catalogue/product-details.html"
 
 
 def categories(request):
