@@ -8,7 +8,7 @@ from accounts.models import Profile
 
 
 class RegistrationForm(UserCreationForm):
-    email = EmailField(widget=EmailInput(attrs={'required': 'True'}))
+    email = EmailField(widget=EmailInput(attrs={"required": "True"}))
 
     class Meta:
         model = get_user_model()
@@ -19,13 +19,11 @@ class RegistrationForm(UserCreationForm):
 
         if not bool(cleaned_data["email"]):
             raise ValidationError("Insert email address.")
-        if get_user_model().objects.filter(
-                email=cleaned_data["email"]).exists():
+        if get_user_model().objects.filter(email=cleaned_data["email"]).exists():
             raise ValidationError("User with this email already exists.")
 
 
 class UserProfileForm(ModelForm):
-
     class Meta:
         model = Profile
         fields = ["avatar"]
@@ -40,19 +38,17 @@ class UserProfileForm(ModelForm):
             max_width = max_height = 100
             if w > max_width or h > max_height:
                 raise ValidationError(
-                    u"Please use an image that is "
-                    "%s x %s pixels or smaller." % (max_width, max_height))
+                    "Please use an image that is " "%s x %s pixels or smaller." % (max_width, max_height)
+                )
 
             # validate content type
-            main, sub = avatar.content_type.split('/')
+            main, sub = avatar.content_type.split("/")
             if main != "image" or sub not in ["jpeg", "jpg", "png"]:
-                raise ValidationError(
-                    u"Please use a JPEG, JPG or PNG image.")
+                raise ValidationError("Please use a JPEG, JPG or PNG image.")
 
             # validate file size
             if len(avatar) > (20 * 1024):
-                raise ValidationError(
-                    u"Avatar file size may not exceed 20k.")
+                raise ValidationError("Avatar file size may not exceed 20k.")
 
         except AttributeError:
             """

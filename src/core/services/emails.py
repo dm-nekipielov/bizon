@@ -17,8 +17,8 @@ def send_registration_email(request, user_instance):
             "user": user_instance,
             "domain": domain,
             "uid": urlsafe_base64_encode(force_bytes(user_instance.pk)),
-            "token": TokenGenerator().make_token(user_instance)
-        }
+            "token": TokenGenerator().make_token(user_instance),
+        },
     )
 
     email = EmailMessage(
