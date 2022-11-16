@@ -5133,7 +5133,7 @@ fieldset:disabled .btn {
 .page-link {
     position: relative;
     display: block;
-    color: #0d6efd;
+    color: #666;
     text-decoration: none;
     background-color: #fff;
     border: 1px solid #dee2e6;
@@ -5168,8 +5168,8 @@ fieldset:disabled .btn {
 .page-item.active .page-link {
     z-index: 3;
     color: #fff;
-    background-color: #0d6efd;
-    border-color: #0d6efd
+    background-color: #fcbe00;
+    border-color: #fcbe00
 }
 
 .page-item.disabled .page-link {
