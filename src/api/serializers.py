@@ -2,7 +2,7 @@ from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
 from accounts.models import CustomUser
-from catalogue.models import Category, Product, SubCategory
+from catalogue.models import Category, Product, Subcategory
 
 
 class CustomUserSerializer(ModelSerializer):
@@ -21,7 +21,7 @@ class SubCategorySerializer(ModelSerializer):
     products = ProductSerializer(many=True, read_only=True)
 
     class Meta:
-        model = SubCategory
+        model = Subcategory
         fields = ("id", "name", "products", "category")
 
 

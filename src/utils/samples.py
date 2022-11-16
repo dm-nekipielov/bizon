@@ -1,4 +1,4 @@
-from catalogue.models import Category, Order, Product, SubCategory
+from catalogue.models import Category, Order, Product, Subcategory
 
 
 def sample_category(name):
@@ -6,7 +6,7 @@ def sample_category(name):
 
 
 def sample_subcategory(name, category):
-    return SubCategory.objects.create(name=name, category=category)
+    return Subcategory.objects.create(name=name, category=category)
 
 
 def sample_product(subcategory, name, price, **kwargs):

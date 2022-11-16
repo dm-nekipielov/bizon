@@ -7,7 +7,7 @@ from rest_framework.viewsets import ModelViewSet
 from accounts.models import CustomUser
 from api.serializers import (CategorySerializer, CustomUserSerializer,
                              ProductSerializer, SubCategorySerializer)
-from catalogue.models import Category, Product, SubCategory
+from catalogue.models import Category, Product, Subcategory
 
 
 class ProductMixin:
@@ -16,7 +16,7 @@ class ProductMixin:
 
 
 class SubCategoryMixin:
-    queryset = SubCategory.objects.all()
+    queryset = Subcategory.objects.all()
     serializer_class = SubCategorySerializer
 
 

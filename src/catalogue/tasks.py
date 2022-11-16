@@ -3,7 +3,7 @@ import random
 from celery import shared_task
 from faker import Faker
 
-from catalogue.models import Category, Product, SubCategory
+from catalogue.models import Category, Product, Subcategory
 
 
 @shared_task
@@ -26,16 +26,16 @@ def generate_subcategories():
     for category in categories:
         for _ in range(5):
             data = {"category": category, "name": fake.word().title()}
-            creation_list.append(SubCategory(**data))
-    SubCategory.objects.bulk_create(creation_list)
+            creation_list.append(Subcategory(**data))
+    Subcategory.objects.bulk_create(creation_list)
 
 
 @shared_task
 def generate_products():
     fake = Faker()
-    if not SubCategory.objects.all():
+    if not Subcategory.objects.all():
         generate_subcategories()
-    subcategories = SubCategory.objects.all()
+    subcategories = Subcategory.objects.all()
     creation_list = []
     for subcategory in subcategories:
         for _ in range(5):
