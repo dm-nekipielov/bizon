@@ -307,7 +307,7 @@
                             <div class="cat__menu">
                                 <nav id="mobile-menu" style="display: block;">
                                     <ul>
-                                        {% for category in category_list %}
+                                        {% for category in categories %}
                                         <li>
                                             <a href="{%  url 'catalogue:category' category.pk %}">{{ category.name }}
                                                 <i class="far fa-angle-down"></i></a>

@@ -9,13 +9,15 @@ from catalogue.tasks import (generate_categories, generate_products,
 class IndexView(ListView):
     model = Category
     template_name = "index.html"
+    context_object_name = "categories"
 
 
 class SubcategoryListView(ListView):
     model = Subcategory
     template_name = "catalogue/subcategory_list.html"
     context_object_name = 'subcategories'
-    paginate_by = 1
+    extra_context = {'categories': Category.objects.all()}
+    paginate_by = 10
 
     def get_queryset(self):
         return Subcategory.objects.filter(
@@ -27,7 +29,8 @@ class ProductListView(ListView):
     model = Product
     template_name = "catalogue/product_list.html"
     context_object_name = 'products'
-    paginate_by = 1
+    extra_context = {'categories': Category.objects.all()}
+    paginate_by = 10
 
     def get_queryset(self):
         return Product.objects.filter(
@@ -38,6 +41,7 @@ class ProductListView(ListView):
 class ProductView(DetailView):
     model = Product
     template_name = "catalogue/product_details.html"
+    extra_context = {'categories': Category.objects.all()}
 
 
 def categories(request):
