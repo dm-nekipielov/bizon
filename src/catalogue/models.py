@@ -5,7 +5,6 @@ from django.db import models
 class Product(models.Model):
     subcategory = models.ForeignKey(to="catalogue.Subcategory", related_name="products", on_delete=models.CASCADE)
     name = models.CharField(max_length=200, db_index=True)
-    # alias = models.CharField(max_length=200, default=str(name).lower().replace(" ", "_"))
     code = models.IntegerField(null=True)
     image = models.ImageField(upload_to="catalogue/products/%Y/%m/%d", default="/media/catalogue/no_image.jpg")
     description = models.TextField(blank=True)
