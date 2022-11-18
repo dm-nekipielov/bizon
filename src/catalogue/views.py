@@ -6,6 +6,10 @@ from catalogue.tasks import (generate_categories, generate_products,
                              generate_subcategories)
 
 
+def categories(request):
+    return {"categories": Category.objects.all()}
+
+
 class IndexView(ListView):
     model = Category
     template_name = "index.html"
@@ -16,7 +20,6 @@ class SubcategoryListView(ListView):
     model = Subcategory
     template_name = "catalogue/subcategory_list.html"
     context_object_name = 'subcategories'
-    extra_context = {'categories': Category.objects.all()}
     paginate_by = 10
 
     def get_queryset(self):
@@ -29,7 +32,6 @@ class ProductListView(ListView):
     model = Product
     template_name = "catalogue/product_list.html"
     context_object_name = 'products'
-    extra_context = {'categories': Category.objects.all()}
     paginate_by = 10
 
     def get_queryset(self):
@@ -41,19 +43,18 @@ class ProductListView(ListView):
 class ProductView(DetailView):
     model = Product
     template_name = "catalogue/product_details.html"
-    extra_context = {'categories': Category.objects.all()}
 
 
-def categories(request):
+def generate_categories_view(request):
     generate_categories.delay()
     return HttpResponse("Generating categories")
 
 
-def subcategories(request):
+def generate_subcategories_view(request):
     generate_subcategories.delay()
     return HttpResponse("Generating subcategories")
 
 
-def products(request):
+def generate_products_view(request):
     generate_products.delay()
     return HttpResponse("Generating categories")

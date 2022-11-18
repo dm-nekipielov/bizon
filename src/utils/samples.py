@@ -22,5 +22,5 @@ def sample_product(subcategory, name, price, **kwargs):
 def sample_order(user, products):
     order = Order.objects.create(user=user)
     for product in products:
-        order.products.add(product)
+        order.generate_products_view.add(product)
     return order
