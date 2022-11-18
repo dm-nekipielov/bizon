@@ -70,3 +70,10 @@ class Order(models.Model):
 
     def total(self):
         return sum(i.price for i in self.products.all())
+
+
+# class Wishlist(models.Model):
+#     ...
+#
+#     def __str__(self):
+#         return self.wished_item.title
