@@ -24,6 +24,7 @@ urlpatterns = [
     path("", IndexView.as_view(), name="index"),
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
-    path("accounts/", include("accounts.urls")),
-    path("catalogue/", include("catalogue.urls")),
+    path("accounts/", include("accounts.urls", namespace="accounts")),
+    path("catalogue/", include("catalogue.urls", namespace="catalogue")),
+    path("cart/", include("cart.urls", namespace="cart")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

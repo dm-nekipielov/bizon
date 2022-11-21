@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "core",
     "accounts",
     "catalogue",
+    "cart",
     "api",
 ]
 
@@ -75,7 +76,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "catalogue.views.categories",
+                "catalogue.context_processors.categories",
+                "cart.context_processors.cart",
             ],
         },
     },

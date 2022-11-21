@@ -6,8 +6,7 @@ from catalogue.tasks import (generate_categories, generate_products,
                              generate_subcategories)
 
 
-def categories(request):
-    return {"categories": Category.objects.all()}
+
 
 
 class IndexView(ListView):
