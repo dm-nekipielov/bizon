@@ -95,7 +95,7 @@
 {#                                <option value="3">3</option>#}
 {#                                <option value="4">4</option>#}
 {#                            </select>#}
-    <button type="button" id="add-button" class="cart-btn" value="{{ product.pk }}">Add to Cart</button>
+                             <button type="button" id="add-button" class="cart-btn" value="{{ product.pk }}">Add to Cart</button>
                         </div>
                         <div class="details-meta">
                             <div class="d-meta-left">
@@ -454,8 +454,8 @@
                 action: "post"
             },
             success: function (json) {
-                {#console.log(json)#}
                 document.getElementById("cart-qty").innerHTML = json.qty;
+                document.getElementById("cart-total").innerHTML = "$" + json.subtotal;
             },
             error: function (xhr, errmsg, err) {
             }

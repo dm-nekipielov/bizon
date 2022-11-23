@@ -56,42 +56,73 @@
                                 <tbody>
                                    {% for item in cart %}
                                    {% with product=item.product %}
-                                       <tr>
+                                       <tr data-index="{{ product.pk }}" class="product-item">
                                            <td class="product-thumbnail"><a href="{% url 'catalogue:product' product.pk %}"><img src="{{ product.image }}" alt=""></a></td>
                                            <td class="product-name"><a href="{% url 'catalogue:product' product.pk %}">{{ product.name }}</a></td>
-                                           <td class="product-price"><span class="amount">{{ product.price }}</span></td>
+                                           <td class="product-price"><span class="amount">${{ product.price }}</span></td>
                                            <td class="product-quantity">
-                                               <div class="cart-plus-minus"><input type="text" value="1"><div class="dec qtybutton">-</div><div class="inc qtybutton">+</div></div>
+                                               <div>
+                                                   <div class="row align-items-center justify-content-center">
+                                                       <div class="col-xl-5 col-lg-5 col-md-7">
+                                                           <label for="select{{product.pk}}"></label>
+                                                           <select id="select{{product.pk}}" class="m-1">
+                                                              <option selected>
+                                                                {{item.qty}}
+                                                              </option>
+                                                              <option value="1">1</option>
+                                                              <option value="2">2</option>
+                                                              <option value="3">3</option>
+                                                              <option value="4">4</option>
+                                                           </select>
+                                                       </div>
+                                                       <div class="col-xl-5 col-lg-5 col-md-7">
+                                                           <button type="button" id="update-button" data-index="{{product.pk}}"
+                                                              class="btn btn-outline-secondary btn-sm update-button">Update</button>
+                                                       </div>
+                                                   </div>
+                                               </div>
+{#                                               <div class="cart-plus-minus">#}
+{#                                                   <input type="text" id="select{{ product.pk }}" value="{{ item.qty }}">#}
+{#                                                   <button type="button" class="update-button dec qtybutton" data-index="{{product.id}}"></button>#}
+{#                                                   <button type="button" class="update-button inc qtybutton" data-index="{{product.id}}"></button>#}
+{#                                               </div>#}
+{#                                               <button class="tp-btn-h1 update-button" data-index="{{product.id}}" type="button">Update cart</button>#}
                                            </td>
-                                           <td class="product-subtotal"><span class="amount">{{ product.price }}</span></td>
-                                           <td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
+                                           <td class="product-subtotal"><span class="subtotal">{{ cart.get_total_price }}</span></td>
+                                           <td class="product-remove">
+                                               <button type="button" id="delete-button" data-index="{{ product.pk }}" class="btn tp-btn-h1 p-1 btn-sm delete-button fa fa-times"></button>
+                                           </td>
                                        </tr>
                                    {% endwith %}
                                    {% endfor %}
                                 </tbody>
                               </table>
                            </div>
-                           <div class="row">
-                              <div class="col-12">
-                                    <div class="coupon-all">
-                                       <div class="coupon">
-                                          <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Coupon code" type="text">
-                                          <button class="tp-btn-h1" name="apply_coupon" type="submit">Apply
-                                                coupon</button>
-                                       </div>
-                                       <div class="coupon2">
-                                          <button class="tp-btn-h1" name="update_cart" type="submit">Update cart</button>
-                                       </div>
-                                    </div>
-                              </div>
-                           </div>
+{#                           <div class="row">#}
+{#                              <div class="col-12">#}
+{#                                    <div class="coupon-all">#}
+{#                                       <div class="coupon">#}
+{#                                          <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Coupon code" type="text">#}
+{#                                          <button class="tp-btn-h1" name="apply_coupon" type="submit">Apply#}
+{#                                                coupon</button>#}
+{#                                       </div>#}
+{#                                       <div class="coupon2">#}
+{#                                          <button class="tp-btn-h1 update-button" data-index="{{product.id}}" type="button">Update cart</button>#}
+{#                                       </div>#}
+{#                                    </div>#}
+{#                              </div>#}
+{#                           </div>#}
                            <div class="row justify-content-end">
                               <div class="col-md-5">
                                     <div class="cart-page-total">
                                        <h2>Cart totals</h2>
                                        <ul class="mb-20">
-                                          <li>Subtotal <span>$250.00</span></li>
-                                          <li>Total <span>$250.00</span></li>
+                                          <li>
+                                              Subtotal
+                                              <span id="subtotal">
+                                                  ${{ cart.get_total_price }}
+                                              </span>
+                                          </li>
                                        </ul>
                                        <a class="tp-btn-h1" href="checkout.html">Proceed to checkout</a>
                                     </div>
@@ -106,5 +137,56 @@
 
 
     </main>
+
+    <!-- Delete item -->
+    <script>
+        $(document).on('click', '.delete-button', function (e) {
+            e.preventDefault();
+            var prodpk = $(this).data('index');
+            $.ajax({
+                type: "POST",
+                url: "{% url 'cart:cart_delete' %}",
+                data: {
+                    productpk: $(this).data('index'),
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: "post"
+                },
+                success: function (json) {
+                    $('.product-item[data-index="' + prodpk + '"]').remove();
+                    document.getElementById("cart-qty").innerHTML = json.qty
+                    document.getElementById("subtotal").innerHTML = "$" + json.subtotal
+                    document.getElementById("cart-total").innerHTML = "$" + json.subtotal
+                },
+                error: function (xhr, errmsg, err) {
+                }
+            });
+        })
+    </script>
+
+    <!-- Update item -->
+    <script>
+        $(document).on('click', '.update-button', function (e) {
+            e.preventDefault();
+            var prodpk = $(this).data('index');
+            $.ajax({
+                type: "POST",
+                url: "{% url 'cart:cart_update' %}",
+                data: {
+                    productpk: $(this).data('index'),
+                    productqty: $('#select' + prodpk + ' option:selected').text(),
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: "post"
+                },
+                success: function (json) {
+                    document.getElementById("cart-qty").innerHTML = json.qty
+                    document.getElementById("subtotal").innerHTML = "$" + json.subtotal
+                    document.getElementById("cart-total").innerHTML = "$" + json.subtotal
+                },
+                error: function (xhr, errmsg, err) {
+                }
+            });
+        })
+    </script>
+
 
 {% endblock content %}

@@ -269,10 +269,19 @@
                                 <a class="icon-link"
                                    href="{% url 'cart:cart_summary' %}">
                                     <i class="flaticon-shopping-bag"></i>
-                                    <span id="cart-qty" class="count">0</span>
-                                    <span class="text">
-                                    <span class="sub">Your Cart:</span>
-                                    $00.00 </span>
+                                    {% with total_qty=cart|length %}
+                                        <span id="cart-qty" class="count">
+                                            {% if total_qty > 0 %}
+                                                {{ total_qty }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </span>
+                                        <div>
+                                            <span class="sub">Your Cart:</span>
+                                            <span class="text" id="cart-total">${{ cart.get_total_price }}</span>
+                                        </div>
+                                    {% endwith %}
                                 </a>
                                 <div class="cart">
                                     <div class="cart__mini">
