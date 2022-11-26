@@ -13,7 +13,7 @@ def sample_product(subcategory, name, price, **kwargs):
     defaults = {
         "code": 12345,
         "description": "Some test description",
-        "stock": 1,
+        "in_stock": 1,
     }
     defaults.update(kwargs)
     return Product.objects.create(name=name, subcategory=subcategory, price=price, **defaults)

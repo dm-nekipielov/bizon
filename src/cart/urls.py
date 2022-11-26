@@ -1,7 +1,6 @@
 from django.urls import path
 
-from cart.views import cart_summary, cart_add, cart_delete, cart_update
-
+from cart.views import cart_add, cart_delete, cart_summary, cart_update
 
 app_name = "cart"
 urlpatterns = [

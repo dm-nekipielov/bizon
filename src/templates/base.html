@@ -164,21 +164,21 @@
             <div class="header-inner">
                 <div class="row align-items-center">
                     <div class="col-xl-6 col-lg-7">
-                        <div class="header-inner-start">
-                            <div class="header__currency border-right">
-                                <div class="s-name">
-                                    <span>Language: </span>
-                                </div>
-                                <select>
-                                    <option>English</option>
-                                    <option>Ukraine</option>
-                                </select>
-                            </div>
-                            <div class="support d-none d-sm-block">
-                                <p>Need Help? <a href="tel:+380969004135">+38(096)900-41-35</a>
-                                </p>
-                            </div>
-                        </div>
+{#                        <div class="header-inner-start">#}
+{#                            <div class="header__currency border-right">#}
+{#                                <div class="s-name">#}
+{#                                    <span>Language: </span>#}
+{#                                </div>#}
+{#                                <select>#}
+{#                                    <option>English</option>#}
+{#                                    <option>Ukraine</option>#}
+{#                                </select>#}
+{#                            </div>#}
+{#                            <div class="support d-none d-sm-block">#}
+{#                                <p>Need Help? <a href="tel:+380969004135">+38(096)900-41-35</a>#}
+{#                                </p>#}
+{#                            </div>#}
+{#                        </div>#}
                     </div>
                     <div class="col-xl-6 col-lg-5 d-none d-lg-block">
                         <div class="header-inner-end text-md-end">
@@ -213,20 +213,12 @@
                     </div>
                     <div class="col-xl-5 col-lg-4 d-none d-lg-block">
                         <div class="header__search">
-                            <form action="#">
+                            <form action="{% url "catalogue:search" %}" method="get">
                                 <div class="header__search-box">
-                                    <input class="search-input" type="text"
+                                    <input class="search-input" type="text" name="q"
                                            placeholder="I'm shopping for...">
                                     <button class="button" type="submit"><i
                                             class="far fa-search"></i></button>
-                                </div>
-                                <div class="header__search-cat">
-                                    <select>
-                                        <option>All Categories</option>
-                                        {% for category in category_list %}
-                                            <option>{{ category.name }}</option>
-                                        {% endfor %}
-                                    </select>
                                 </div>
                             </form>
                         </div>
@@ -283,33 +275,6 @@
                                         </div>
                                     {% endwith %}
                                 </a>
-                                <div class="cart">
-                                    <div class="cart__mini">
-                                        <ul>
-                                            <li>
-                                                <div class="cart__title">
-                                                    <h4>Your Cart</h4>
-                                                    <span></span>
-                                                </div>
-                                            </li>
-
-                                            <li>
-                                                <div class="cart__sub d-flex justify-content-between align-items-center">
-                                                    <h6>Subtotal</h6>
-                                                    <span class="cart__sub-total">$0.00</span>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <a href="cart.html"
-                                                   class="wc-cart mb-10">View
-                                                    cart</a>
-                                                <a href="checkout.html"
-                                                   class="wc-checkout">Checkout</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -331,16 +296,16 @@
                                     <ul>
                                         {% for category in categories %}
                                             <li>
-                                                <a href="{% url 'catalogue:category' category.pk %}">{{ category.name }}
+                                                <a href="{{ category.get_absolute_url }}">{{ category.name }}
                                                     <i class="far fa-angle-down"></i></a>
                                                 <ul class="mega-menu">
                                                     {% for subcategory in category.subcategories.all %}
                                                         <li>
-                                                            <a href="{% url 'catalogue:subcategory' subcategory.pk %}">{{ subcategory.name }}</a>
+                                                            <a href="{{ subcategory.get_absolute_url }}">{{ subcategory.name }}</a>
                                                             <ul class="mega-item">
                                                                 {% for product in subcategory.products.all %}
                                                                     <li>
-                                                                        <a href="{% url 'catalogue:product' product.pk %}">{{ product.name }}</a>
+                                                                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
                                                                     </li>
                                                                 {% endfor %}
                                                             </ul>
@@ -391,8 +356,8 @@
                 </a>
             </div>
             <div class="offcanvas__search mb-25">
-                <form action="#">
-                    <input type="text"
+                <form action="{% url "catalogue:search" %}" method="get">
+                    <input type="text" name="q"
                            placeholder="What are you searching for?">
                     <button type="submit"><i class="far fa-search"></i>
                     </button>

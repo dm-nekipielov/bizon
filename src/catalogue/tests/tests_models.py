@@ -4,8 +4,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from utils.samples import (sample_category, sample_order, sample_product,
-                           sample_subcategory)
+from utils.samples import sample_category, sample_product, sample_subcategory
 
 
 class TestProductModel(TestCase):
@@ -13,12 +12,12 @@ class TestProductModel(TestCase):
         self.user = get_user_model().objects.create(email="some@test.mail", password="somepassword")
         self.test_category = sample_category(name="test_category")
         self.test_subcategory = sample_subcategory(name="test_subcategory", category=self.test_category)
-        self.test_product = sample_product(name="test_product", subcategory=self.test_subcategory, price=999)
-        self.test_product_2 = sample_product(name="test_product_2", subcategory=self.test_subcategory, price=1)
-        self.test_order = sample_order(self.user, [self.test_product, self.test_product_2])
-
-    def test_order_total(self):
-        self.assertEqual(self.test_order.total(), 1000)
+        self.test_product = sample_product(
+            name="test_product", subcategory=self.test_subcategory, price=999, slug="test-product"
+        )
+        self.test_product_2 = sample_product(
+            name="test_product_2", subcategory=self.test_subcategory, price=1, slug="test-product-2"
+        )
 
     def test_product_name_limit(self):
         with self.assertRaises(ValidationError):

@@ -14,7 +14,7 @@ class CustomUserSerializer(ModelSerializer):
 class ProductSerializer(ModelSerializer):
     class Meta:
         model = Product
-        fields = ("id", "name", "description", "price", "code", "stock", "subcategory")
+        fields = ("id", "name", "description", "price", "code", "in_stock", "subcategory")
 
 
 class SubCategorySerializer(ModelSerializer):

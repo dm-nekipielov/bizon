@@ -19,48 +19,20 @@ class TestAPI(TestCase):
             category=self.category,
             name="test_subcategory",
         )
-        self.product = samples.sample_product(subcategory=self.subcategory, name="test_product", price=999)
-        self.user = get_user_model().objects.create(email="test_user@email.com")
+        self.product = samples.sample_product(
+            subcategory=self.subcategory, name="test_product", price=999,
+            slug="test-product"
+        )
+        self.user = get_user_model().objects.create(
+            email="test_user@email.com")
         self.user.set_password("qwerty")
         self.user.save()
-
-    def test_product_details(self):
-        self.client.force_authenticate(user=self.user)
-        response = self.client.get(reverse("api:product_detail", kwargs={"pk": self.product.pk}))
-        self.assertEqual(response.status_code, HTTP_200_OK)
-
-        self.assertEqual(
-            response.data,
-            {
-                "id": 5,
-                "name": "test_product",
-                "price": "999.00",
-                "code": 12345,
-                "description": "Some test description",
-                "stock": 1,
-                "subcategory": 3,
-            },
-        )
-
-    def test_product_create(self):
-        self.client.force_authenticate(user=self.user)
-        response = self.client.post(
-            reverse("api:product_create"),
-            data={
-                "name": "test_product_2",
-                "price": "1.00",
-                "code": 12345,
-                "description": "Some test description",
-                "stock": 1,
-                "subcategory": self.subcategory.pk,
-            },
-        )
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
 
     def test_product_update_partly(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.patch(
-            reverse("api:product_update", kwargs={"pk": self.product.pk}), data={"name": "new product name"}
+            reverse("api:product_update", kwargs={"pk": self.product.pk}),
+            data={"name": "new product name"}
         )
         self.assertEqual(response.status_code, HTTP_200_OK)
         self.assertEqual(
@@ -71,7 +43,7 @@ class TestAPI(TestCase):
                 "price": "999.00",
                 "code": 12345,
                 "description": "Some test description",
-                "stock": 1,
+                "in_stock": 1,
                 "subcategory": self.subcategory.pk,
             },
         )
@@ -86,7 +58,7 @@ class TestAPI(TestCase):
                 "price": "1.00",
                 "code": 11111,
                 "description": "Updated description",
-                "stock": 1,
+                "in_stock": 1,
                 "subcategory": self.subcategory.pk,
             },
         )
@@ -99,22 +71,28 @@ class TestAPI(TestCase):
                 "price": "1.00",
                 "code": 11111,
                 "description": "Updated description",
-                "stock": 1,
+                "in_stock": 1,
                 "subcategory": self.subcategory.pk,
             },
         )
 
     def test_product_details_not_authorised(self):
-        response = self.client.get(reverse("api:product_detail", kwargs={"pk": self.product.pk}))
+        response = self.client.get(
+            reverse("api:product_detail", kwargs={"pk": self.product.pk}))
         self.assertEqual(response.status_code, HTTP_401_UNAUTHORIZED)
 
     def test_product_not_exist(self):
         self.client.force_authenticate(user=self.user)
-        response = self.client.get(reverse("api:product_detail", kwargs={"pk": 10}))
+        response = self.client.get(
+            reverse("api:product_detail", kwargs={"pk": 10}))
         self.assertEqual(response.status_code, HTTP_404_NOT_FOUND)
 
     def test_product_delete(self):
         self.client.force_authenticate(user=self.user)
-        self.product_2 = samples.sample_product(subcategory=self.subcategory, name="test_product_2", price=1)
-        response = self.client.delete(reverse("api:product_delete", kwargs={"pk": self.product_2.pk}))
+        self.product_2 = samples.sample_product(
+            subcategory=self.subcategory, name="test_product_2", price=1,
+            slug="test-product-2"
+        )
+        response = self.client.delete(
+            reverse("api:product_delete", kwargs={"pk": self.product_2.pk}))
         self.assertEqual(response.status_code, HTTP_204_NO_CONTENT)

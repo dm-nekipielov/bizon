@@ -18,6 +18,7 @@ services:
     depends_on:
       - postgres
 
+#need remove this
   postgres:
     image: postgres:12
     ports:
@@ -27,6 +28,8 @@ services:
     env_file:
       - .env
 
+
+#need remove this
   pgadmin:
     container_name: pgadmin_container
     image: dpage/pgadmin4
@@ -79,6 +82,8 @@ services:
     depends_on:
       - backend
 
+
+#need remove this
   celery:
     build: ./
     command: celery -A config worker -l ${CELERY_LOG_LEVEL} -c ${CELERY_NUM_WORKERS}
@@ -91,6 +96,8 @@ services:
     depends_on:
       - redis
 
+
+#need remove this
   redis:
     image: redis
     env_file:
@@ -99,6 +106,8 @@ services:
     depends_on:
       - backend
 
+
+#need remove this
   flower:
     build: ./
     volumes:
@@ -111,6 +120,8 @@ services:
     depends_on:
       - celery
 
+
+#need remove this
   redisadmin:
     container_name: redisadmin
     image: rediscommander/redis-commander:latest
@@ -123,8 +134,10 @@ services:
 
 
 volumes:
+  #need remove this
   pg_data: { }
   pgadmin_data: { }
   mongodb_data: { }
+
   static_content: { }
   media_content: { }

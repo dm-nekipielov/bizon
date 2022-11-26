@@ -19,7 +19,7 @@
                                    <nav class="breadcrumb-trail breadcrumbs">
                                       <ul class="breadcrumb-menu">
                                          <li class="breadcrumb-trail">
-                                            <a href="index.html"><span>Home</span></a>
+                                            <a href="/"><span>Home</span></a>
                                          </li>
                                          <li class="trail-item">
                                             <span>Cart</span>
@@ -49,7 +49,6 @@
                                       <th class="cart-product-name">Product</th>
                                       <th class="product-price">Unit Price</th>
                                       <th class="product-quantity">Quantity</th>
-                                      <th class="product-subtotal">Total</th>
                                       <th class="product-remove">Remove</th>
                                    </tr>
                                 </thead>
@@ -81,14 +80,7 @@
                                                        </div>
                                                    </div>
                                                </div>
-{#                                               <div class="cart-plus-minus">#}
-{#                                                   <input type="text" id="select{{ product.pk }}" value="{{ item.qty }}">#}
-{#                                                   <button type="button" class="update-button dec qtybutton" data-index="{{product.id}}"></button>#}
-{#                                                   <button type="button" class="update-button inc qtybutton" data-index="{{product.id}}"></button>#}
-{#                                               </div>#}
-{#                                               <button class="tp-btn-h1 update-button" data-index="{{product.id}}" type="button">Update cart</button>#}
                                            </td>
-                                           <td class="product-subtotal"><span class="subtotal">{{ cart.get_total_price }}</span></td>
                                            <td class="product-remove">
                                                <button type="button" id="delete-button" data-index="{{ product.pk }}" class="btn tp-btn-h1 p-1 btn-sm delete-button fa fa-times"></button>
                                            </td>
@@ -98,27 +90,13 @@
                                 </tbody>
                               </table>
                            </div>
-{#                           <div class="row">#}
-{#                              <div class="col-12">#}
-{#                                    <div class="coupon-all">#}
-{#                                       <div class="coupon">#}
-{#                                          <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Coupon code" type="text">#}
-{#                                          <button class="tp-btn-h1" name="apply_coupon" type="submit">Apply#}
-{#                                                coupon</button>#}
-{#                                       </div>#}
-{#                                       <div class="coupon2">#}
-{#                                          <button class="tp-btn-h1 update-button" data-index="{{product.id}}" type="button">Update cart</button>#}
-{#                                       </div>#}
-{#                                    </div>#}
-{#                              </div>#}
-{#                           </div>#}
                            <div class="row justify-content-end">
                               <div class="col-md-5">
                                     <div class="cart-page-total">
                                        <h2>Cart totals</h2>
                                        <ul class="mb-20">
                                           <li>
-                                              Subtotal
+                                              Total
                                               <span id="subtotal">
                                                   ${{ cart.get_total_price }}
                                               </span>
