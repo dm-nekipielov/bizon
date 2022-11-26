@@ -6,7 +6,7 @@ print(CURRENT_ENV)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["ec2-44-211-81-191.compute-1.amazonaws.com", "localhost"]
+ALLOWED_HOSTS = ["ec2-54-243-15-53.compute-1.amazonaws.com", "localhost", "54.243.15.53", ]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
