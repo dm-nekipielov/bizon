@@ -18,52 +18,55 @@ services:
     depends_on:
       - postgres
 
-  postgres:
-    image: postgres:12
-    ports:
-      - 5432:5432
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    env_file:
-      - .env
+##need remove this
+#  postgres:
+#    image: postgres:12
+#    ports:
+#      - 5432:5432
+#    volumes:
+#      - pg_data:/var/lib/postgresql/data
+#    env_file:
+#      - .env
+#
+#
+##need remove this
+#  pgadmin:
+#    container_name: pgadmin_container
+#    image: dpage/pgadmin4
+#    restart: always
+#    env_file:
+#      - .env
+#    ports:
+#      - 5000:80
+#    volumes:
+#      - pgadmin_data:/var/lib/pgadmin
+#    depends_on:
+#      - postgres
 
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    restart: always
-    env_file:
-      - .env
-    ports:
-      - 5000:80
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    depends_on:
-      - postgres
-
-  mongodb:
-    image: mongo:3-stretch
-    container_name: mongodb_cont
-    ports:
-      - 27017:27017
-    command: [ "--bind_ip_all", "--smallfiles" ]
-    volumes:
-      - mongodb_data:/data/db
-    env_file:
-      - .env
-    restart: always
-
-  mongo-express:
-    image: mongo-express
-    container_name: mongo_admin_cont
-    restart: always
-    ports:
-      - 8081:8081
-    env_file:
-      - .env
-    links:
-      - mongodb
-    depends_on:
-      - mongodb
+#  mongodb:
+#    image: mongo:3-stretch
+#    container_name: mongodb_cont
+#    ports:
+#      - 27017:27017
+#    command: [ "--bind_ip_all", "--smallfiles" ]
+#    volumes:
+#      - mongodb_data:/data/db
+#    env_file:
+#      - .env
+#    restart: always
+#
+#  mongo-express:
+#    image: mongo-express
+#    container_name: mongo_admin_cont
+#    restart: always
+#    ports:
+#      - 8081:8081
+#    env_file:
+#      - .env
+#    links:
+#      - mongodb
+#    depends_on:
+#      - mongodb
 
   nginx:
     image: nginx:1.19
@@ -79,52 +82,62 @@ services:
     depends_on:
       - backend
 
-  celery:
-    build: ./
-    command: celery -A config worker -l ${CELERY_LOG_LEVEL} -c ${CELERY_NUM_WORKERS}
-    restart: always
-    volumes:
-      - ./src:/bizon
-      - ./commands:/bizon/commands
-    env_file:
-      - .env
-    depends_on:
-      - redis
-
-  redis:
-    image: redis
-    env_file:
-      - .env
-    restart: always
-    depends_on:
-      - backend
-
-  flower:
-    build: ./
-    volumes:
-      - ./src:/bizon
-    env_file:
-      - .env
-    command: celery -A config flower --broker=redis://redis
-    ports:
-      - 5555:5555
-    depends_on:
-      - celery
-
-  redisadmin:
-    container_name: redisadmin
-    image: rediscommander/redis-commander:latest
-    hostname: redisadmin
-    restart: always
-    ports:
-      - 8092:8081
-    env_file:
-      - .env
+#
+##need remove this
+#  celery:
+#    build: ./
+#    command: celery -A config worker -l ${CELERY_LOG_LEVEL} -c ${CELERY_NUM_WORKERS}
+#    restart: always
+#    volumes:
+#      - ./src:/bizon
+#      - ./commands:/bizon/commands
+#    env_file:
+#      - .env
+#    depends_on:
+#      - redis
+#
+#
+##need remove this
+#  redis:
+#    image: redis
+#    env_file:
+#      - .env
+#    restart: always
+#    depends_on:
+#      - backend
+#
+#
+##need remove this
+#  flower:
+#    build: ./
+#    volumes:
+#      - ./src:/bizon
+#    env_file:
+#      - .env
+#    command: celery -A config flower --broker=redis://redis
+#    ports:
+#      - 5555:5555
+#    depends_on:
+#      - celery
+#
+#
+##need remove this
+#  redisadmin:
+#    container_name: redisadmin
+#    image: rediscommander/redis-commander:latest
+#    hostname: redisadmin
+#    restart: always
+#    ports:
+#      - 8092:8081
+#    env_file:
+#      - .env
 
 
 volumes:
-  pg_data: { }
-  pgadmin_data: { }
-  mongodb_data: { }
+  #need remove this
+#  pg_data: { }
+#  pgadmin_data: { }
+#  mongodb_data: { }
+
   static_content: { }
   media_content: { }

@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Your cart
+{% endblock %}
+
+{% block content %}
+    <main>
+        <!-- page-banner-area-start -->
+        <div class="page-banner-area page-banner-height-2" data-background="{% static 'assets/img/banner/page-banner-4.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="page-banner-content text-center">
+                            <h4 class="breadcrumb-title">Your Cart</h4>
+                            <div class="breadcrumb-two">
+                                <nav>
+                                   <nav class="breadcrumb-trail breadcrumbs">
+                                      <ul class="breadcrumb-menu">
+                                         <li class="breadcrumb-trail">
+                                            <a href="/"><span>Home</span></a>
+                                         </li>
+                                         <li class="trail-item">
+                                            <span>Cart</span>
+                                         </li>
+                                      </ul>
+                                   </nav>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- page-banner-area-end -->
+
+        <!-- cart-area-start -->
+        <section class="cart-area pt-120 pb-120">
+            <div class="container">
+               <div class="row">
+                  <div class="col-12">
+                        <form action="#">
+                           <div class="table-content table-responsive">
+                              <table class="table">
+                                <thead>
+                                   <tr>
+                                      <th class="product-thumbnail">Images</th>
+                                      <th class="cart-product-name">Product</th>
+                                      <th class="product-price">Unit Price</th>
+                                      <th class="product-quantity">Quantity</th>
+                                      <th class="product-remove">Remove</th>
+                                   </tr>
+                                </thead>
+                                <tbody>
+                                   {% for item in cart %}
+                                   {% with product=item.product %}
+                                       <tr data-index="{{ product.pk }}" class="product-item">
+                                           <td class="product-thumbnail"><a href="{% url 'catalogue:product' product.pk %}"><img src="{{ product.image }}" alt=""></a></td>
+                                           <td class="product-name"><a href="{% url 'catalogue:product' product.pk %}">{{ product.name }}</a></td>
+                                           <td class="product-price"><span class="amount">${{ product.price }}</span></td>
+                                           <td class="product-quantity">
+                                               <div>
+                                                   <div class="row align-items-center justify-content-center">
+                                                       <div class="col-xl-5 col-lg-5 col-md-7">
+                                                           <label for="select{{product.pk}}"></label>
+                                                           <select id="select{{product.pk}}" class="m-1">
+                                                              <option selected>
+                                                                {{item.qty}}
+                                                              </option>
+                                                              <option value="1">1</option>
+                                                              <option value="2">2</option>
+                                                              <option value="3">3</option>
+                                                              <option value="4">4</option>
+                                                           </select>
+                                                       </div>
+                                                       <div class="col-xl-5 col-lg-5 col-md-7">
+                                                           <button type="button" id="update-button" data-index="{{product.pk}}"
+                                                              class="btn btn-outline-secondary btn-sm update-button">Update</button>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           </td>
+                                           <td class="product-remove">
+                                               <button type="button" id="delete-button" data-index="{{ product.pk }}" class="btn tp-btn-h1 p-1 btn-sm delete-button fa fa-times"></button>
+                                           </td>
+                                       </tr>
+                                   {% endwith %}
+                                   {% endfor %}
+                                </tbody>
+                              </table>
+                           </div>
+                           <div class="row justify-content-end">
+                              <div class="col-md-5">
+                                    <div class="cart-page-total">
+                                       <h2>Cart totals</h2>
+                                       <ul class="mb-20">
+                                          <li>
+                                              Total
+                                              <span id="subtotal">
+                                                  ${{ cart.get_total_price }}
+                                              </span>
+                                          </li>
+                                       </ul>
+                                       <a class="tp-btn-h1" href="checkout.html">Proceed to checkout</a>
+                                    </div>
+                              </div>
+                           </div>
+                        </form>
+                  </div>
+               </div>
+            </div>
+         </section>
+         <!-- cart-area-end -->
+
+
+    </main>
+
+    <!-- Delete item -->
+    <script>
+        $(document).on('click', '.delete-button', function (e) {
+            e.preventDefault();
+            var prodpk = $(this).data('index');
+            $.ajax({
+                type: "POST",
+                url: "{% url 'cart:cart_delete' %}",
+                data: {
+                    productpk: $(this).data('index'),
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: "post"
+                },
+                success: function (json) {
+                    $('.product-item[data-index="' + prodpk + '"]').remove();
+                    document.getElementById("cart-qty").innerHTML = json.qty
+                    document.getElementById("subtotal").innerHTML = "$" + json.subtotal
+                    document.getElementById("cart-total").innerHTML = "$" + json.subtotal
+                },
+                error: function (xhr, errmsg, err) {
+                }
+            });
+        })
+    </script>
+
+    <!-- Update item -->
+    <script>
+        $(document).on('click', '.update-button', function (e) {
+            e.preventDefault();
+            var prodpk = $(this).data('index');
+            $.ajax({
+                type: "POST",
+                url: "{% url 'cart:cart_update' %}",
+                data: {
+                    productpk: $(this).data('index'),
+                    productqty: $('#select' + prodpk + ' option:selected').text(),
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: "post"
+                },
+                success: function (json) {
+                    document.getElementById("cart-qty").innerHTML = json.qty
+                    document.getElementById("subtotal").innerHTML = "$" + json.subtotal
+                    document.getElementById("cart-total").innerHTML = "$" + json.subtotal
+                },
+                error: function (xhr, errmsg, err) {
+                }
+            });
+        })
+    </script>
+
+
+{% endblock content %}

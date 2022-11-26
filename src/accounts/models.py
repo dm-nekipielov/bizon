@@ -11,7 +11,6 @@ from accounts.managers import CustomerManager
 from utils.general import directory_path
 
 
-# Create your models here.
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_("name"), max_length=150, blank=True)
     last_name = models.CharField(_("surname"), max_length=150, blank=True)

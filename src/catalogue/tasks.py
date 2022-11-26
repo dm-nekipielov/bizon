@@ -44,8 +44,8 @@ def generate_products():
                 "name": fake.catch_phrase(),
                 "code": random.randint(10_000, 99_999),
                 "description": fake.text(1000),
-                "price": random.randint(100, 10_000),
-                "stock": random.randint(1, 10),
+                "price": random.randint(1, 100),
+                "in_stock": random.randint(1, 10),
             }
             creation_list.append(Product(**data))
     Product.objects.bulk_create(creation_list)

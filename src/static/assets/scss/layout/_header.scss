@@ -203,7 +203,6 @@
             position: absolute;
             content: '';
             top: 50%;
-            left: 160px;
             height: 45%;
             width: 1px;
             background: #E0E0E0;
@@ -221,7 +220,6 @@
                 border: 2px solid $white;
                 outline: none;
                 padding: 0 15px;
-                padding-left: 170px;
                 padding-right: 60px;
                 @media #{$xs}{
                 padding-left: 15px;
