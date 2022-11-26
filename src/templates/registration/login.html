@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    BizON. Login
+{% endblock %}
+
+{% block content %}
+
+    <main>
+        <!-- account-area-start -->
+        <div class="account-area mt-70 mb-70">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="basic-login mb-50">
+                            <h5>Login</h5>
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form|crispy }}
+                                <div class="login-action mb-10 fix">
+                                    <span class="log-rem f-left">
+                                       <input id="remember" type="checkbox">
+                                       <label for="remember">Remember me</label>
+                                    </span>
+                                    <span class="forgot-login f-right">
+                                       <a href="#">Lost your password?</a>
+                                    </span>
+                                </div>
+                                <button type="submit" value="Login" class="tp-in-btn w-100">log
+                                    in</button>
+                                <div>
+                                    <span class="row text-center">
+                                        <a href="{% url 'accounts:registration' %}">Registration</a>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- account-area-end -->
+    </main>
+
+{% endblock %}
